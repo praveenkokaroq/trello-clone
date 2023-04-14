@@ -1,12 +1,10 @@
 import React, { ReactNode } from "react";
 import {
   IconButton,
-  Avatar,
   Box,
   CloseButton,
   Flex,
   HStack,
-  VStack,
   Icon,
   useColorModeValue,
   Link,
@@ -14,35 +12,13 @@ import {
   DrawerContent,
   Text,
   useDisclosure,
+  Button,
   BoxProps,
   FlexProps,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  Button,
 } from "@chakra-ui/react";
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-  FiUsers,
-  FiMenu,
-  FiBell,
-  FiChevronDown,
-  FiMessageCircle,
-} from "react-icons/fi";
+import { FiHome, FiCompass, FiStar, FiSettings, FiMenu } from "react-icons/fi";
 import { IconType } from "react-icons";
-import {
-  useSession,
-  UserAccountDropdown,
-  signIn,
-  NotificationBell,
-  ChatMessageBell,
-} from "@roq/nextjs";
+import { signIn, UserAccountDropdown, useSession } from "@roq/nextjs";
 
 interface LinkItemProps {
   name: string;
@@ -51,15 +27,14 @@ interface LinkItemProps {
 }
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, path: "/" },
-  { name: "Team management", icon: FiUsers, path: "/invites" },
-  { name: "Chat", icon: FiMessageCircle, path: "/chat" },
-  // { name: "Explore", icon: FiCompass },
-  // { name: "Favourites", icon: FiStar },
-  // { name: "Settings", icon: FiSettings },
+  { name: "Explore", icon: FiCompass, path: "/" },
+  { name: "Favourites", icon: FiStar, path: "/" },
+  { name: "Settings", icon: FiSettings, path: "/" },
 ];
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       <SidebarContent
@@ -196,14 +171,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
-        <NotificationBell />
         <Flex alignItems={"center"}>
           {session?.roqUserId ? (
             <UserAccountDropdown />
           ) : (
-            <Button colorScheme="purple" onClick={signIn}>
-              Login
-            </Button>
+            <Button onClick={signIn}>Login</Button>
           )}
         </Flex>
       </HStack>

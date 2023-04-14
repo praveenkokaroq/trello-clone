@@ -1,99 +1,9 @@
 import Head from "next/head";
 import Board from "react-trello-ts";
-import { BoardData } from "react-trello-ts/dist/types/Board";
-import {
-  Card as CardInterface,
-  Lane as LaneInterface,
-} from "react-trello-ts/dist/types/Board";
-
+import { boardData } from "./data";
 import AppLayout from "@/layout/app-layout";
 
-import useSWR, { Fetcher } from "swr";
-
-export const useFetchBoard = () => {
-  const fetcher: Fetcher<BoardData> = (apiURL: string) =>
-    fetch(apiURL, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    }).then((res) => res.json());
-
-  return useSWR("/api/board", fetcher);
-};
-
 export default function Home() {
-  const { data, isLoading, error, mutate } = useFetchBoard();
-  console.log({ data, error });
-
-  let boardData: BoardData = {
-    lanes: data?.lanes || [],
-  };
-
-  const handleCardAdd = async (card: CardInterface, laneId: string) => {
-    console.log({ card, laneId });
-    await fetch("/api/cards", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...card,
-        laneId,
-        label: " ",
-        description: " ",
-      }),
-    });
-
-    mutate();
-  };
-
-  const handleMoveCard = async (
-    fromlaneId: string,
-    toLaneId: string,
-    cardId: string,
-    addedIndex: string
-  ) => {
-    console.log({ fromlaneId, toLaneId, cardId, addedIndex });
-
-    await fetch(`/api/cards/${cardId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        laneId: toLaneId,
-      }),
-    });
-
-    mutate();
-  };
-
-  const handleUpdateCard = async (cardId: string, card: CardInterface) => {
-    console.log("card changed", cardId, card);
-    await fetch(`/api/cards/${cardId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(card),
-    });
-
-    mutate();
-  };
-
-  const handleLaneAdd = async (lane: { title: string; laneId: string }) => {
-    console.log(lane);
-    await fetch("/api/lanes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: lane.laneId,
-        title: lane.title,
-        droppable: true,
-        label: " ",
-        disallowAddingCard: false,
-        currentPage: 1,
-      }),
-    });
-
-    mutate();
-  };
-
-  console.log({ boardData });
-
   return (
     <>
       <Head>
@@ -110,18 +20,9 @@ export default function Home() {
             draggable
             id="EditableBoard1"
             hideCardDeleteAction={false}
-            onCardAdd={handleCardAdd}
-            onCardUpdate={handleUpdateCard}
-            onCardClick={(cardId, metadata, laneId) =>
-              console.log(
-                `Card with id:${cardId} clicked. Card in lane: ${laneId}`
-              )
-            }
-            onCardMoveAcrossLanes={handleMoveCard}
             editable
             canAddLanes
             editLaneTitle
-            onLaneAdd={handleLaneAdd}
           />
         ) : (
           <></>
