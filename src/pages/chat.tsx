@@ -1,7 +1,8 @@
 import Head from "next/head";
+import { Box } from "@chakra-ui/react";
 
 import AppLayout from "@/layout/app-layout";
-import { UserInvitesTable } from "@roq/nextjs";
+import { Chat } from "@roq/nextjs";
 
 export default function Home() {
   return (
@@ -13,7 +14,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AppLayout>
-        <UserInvitesTable />
+        <Box w="100%" h="80vh">
+          <Chat fluid={true} />
+        </Box>
       </AppLayout>
     </>
   );

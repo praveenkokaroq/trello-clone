@@ -33,9 +33,16 @@ import {
   FiMenu,
   FiBell,
   FiChevronDown,
+  FiMessageCircle,
 } from "react-icons/fi";
 import { IconType } from "react-icons";
-import { useSession, UserAccountDropdown, signIn } from "@roq/nextjs";
+import {
+  useSession,
+  UserAccountDropdown,
+  signIn,
+  NotificationBell,
+  ChatMessageBell,
+} from "@roq/nextjs";
 
 interface LinkItemProps {
   name: string;
@@ -44,7 +51,8 @@ interface LinkItemProps {
 }
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, path: "/" },
-  { name: "Invites", icon: FiUsers, path: "/invites" },
+  { name: "Team management", icon: FiUsers, path: "/invites" },
+  { name: "Chat", icon: FiMessageCircle, path: "/chat" },
   // { name: "Explore", icon: FiCompass },
   // { name: "Favourites", icon: FiStar },
   // { name: "Settings", icon: FiSettings },
@@ -188,12 +196,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        />
+        <NotificationBell />
         <Flex alignItems={"center"}>
           {session?.roqUserId ? (
             <UserAccountDropdown />

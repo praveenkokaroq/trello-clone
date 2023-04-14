@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import "@roq/nextjs/index.css";
 import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
-import { RoqProvider } from "@roq/nextjs";
+import { RoqProvider, ChatProvider } from "@roq/nextjs";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -14,8 +14,11 @@ export default function App({ Component, pageProps }: AppProps) {
             useRoqAuth: true,
           },
         }}
+        themeMode="dark"
       >
-        <Component {...pageProps} />
+        <ChatProvider>
+          <Component {...pageProps} />
+        </ChatProvider>
       </RoqProvider>
     </ChakraProvider>
   );
